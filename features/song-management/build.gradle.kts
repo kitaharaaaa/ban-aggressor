@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kitahara.common"
+    namespace = "com.kitahara.song_management"
     compileSdk = 34
 
     defaultConfig {
@@ -28,6 +28,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -41,4 +47,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //compose
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.material)
+    implementation(libs.material3)
+    implementation(libs.ui)
+
 }

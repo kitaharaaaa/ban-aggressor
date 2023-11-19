@@ -1,7 +1,10 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -36,9 +39,22 @@ android {
 dependencies {
 
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //ktor
+    implementation( libs.ktor.client.android)
+    implementation (libs.ktor.client.serialization)
+    implementation (libs.kotlinx.serialization.json)
+
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization.kotlinx.json)
+
+    implementation(project(":core:common"))
 }

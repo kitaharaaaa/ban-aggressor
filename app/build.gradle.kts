@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -70,4 +70,5 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":core:common"))
+    implementation(project(":features:song-management"))
 }
