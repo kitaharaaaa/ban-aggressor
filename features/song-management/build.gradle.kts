@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,4 +58,10 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.ui)
 
+    debugImplementation(libs.ui.tooling)
+    implementation(libs.ui.tooling.preview)
+
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }
