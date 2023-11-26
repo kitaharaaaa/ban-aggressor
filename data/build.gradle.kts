@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation ("com.google.code.gson:gson:2.6.1")
 
+    implementation(files("C:\\Users\\bvale\\AndroidStudioProjects\\banaggressor\\spotify-app-remote-release-0.8.0.aar"))
     implementation(project(":core:common"))
 }
