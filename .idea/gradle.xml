@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/song-management" />
+            <option value="$PROJECT_DIR$/features/song-playback" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

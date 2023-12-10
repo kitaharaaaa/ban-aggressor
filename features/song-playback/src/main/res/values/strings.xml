@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="song_playment_description">This service tracks your spotify account activity and informs you artist name, his country. If it is ru artist - app will block this band</string>
+</resources>
