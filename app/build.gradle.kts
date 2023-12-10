@@ -69,8 +69,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -85,5 +85,6 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":core:common"))
+    implementation(project(":core:theme"))
     implementation(project(":features:song-management"))
 }

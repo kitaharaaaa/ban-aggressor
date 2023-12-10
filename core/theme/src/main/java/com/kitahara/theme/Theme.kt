@@ -1,4 +1,4 @@
-package com.kitahara.banaggressor.ui.theme
+package com.kitahara.theme
 
 import android.app.Activity
 import android.os.Build
