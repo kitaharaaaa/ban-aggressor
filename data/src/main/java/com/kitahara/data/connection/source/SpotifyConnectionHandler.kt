@@ -3,31 +3,34 @@ package com.kitahara.data.connection.source
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
-import com.kitahara.data.general_data.PlayerGeneral.playerApiState
+import com.kitahara.data.auth.SpotifyAuthImpl.Companion.REDIRECT_URI
+import com.kitahara.data.general_data.PlayerGeneral.connectionParams
+import com.kitahara.data.general_data.PlayerGeneral.mSpotifyAppRemote
+import com.kitahara.data.general_data.PlayerGeneral.playerApi
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp
 import com.spotify.android.appremote.api.error.NotLoggedInException
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+
+//todo write interface and use this class as data source
 class SpotifyConnectionHandler @Inject constructor(
-    /*@ActivityContext */private val applicationContext: Context //todo check whether activity context needed
+    @ActivityContext private val applicationContext: Context //todo check whether activity context needed
 ) {
-
-    private var connectionParams: ConnectionParams? = null
-    private var mSpotifyAppRemote: SpotifyAppRemote? = null
-
     fun buildConnection(toastCallback: (String) -> Unit) {
         val isSpotifyInstalled = isSpotifyInstalled()
         Log.e(TAG, "buildConnection: isSpotifyInstalled = $isSpotifyInstalled")
 
         if (isSpotifyInstalled) {
-            toastCallback("Spotify detected")
-            connectionParams = ConnectionParams.Builder("e28855579e6b4e499adf252d742d7df3")
-                /*.setRedirectUri("https://example.com/callback")*/
+            toastCallback("Spotify installed")
+            connectionParams = ConnectionParams.Builder(SPOTIFY_CLIENT_ID)
                 .showAuthView(true)
+                .setRedirectUri(REDIRECT_URI)
                 .build()
         } else toastCallback("Spotify Not Installed")
     }
@@ -51,7 +54,7 @@ class SpotifyConnectionHandler @Inject constructor(
                 mSpotifyAppRemote = spotifyAppRemote
                 Log.e(TAG, "onConnected: $spotifyAppRemote")
 
-                playerApiState.value = spotifyAppRemote?.playerApi
+                playerApi = spotifyAppRemote?.playerApi
             }
 
             override fun onFailure(error: Throwable?) {
@@ -97,5 +100,6 @@ class SpotifyConnectionHandler @Inject constructor(
 
     companion object {
         const val TAG = "SpotifyConnectionHandler"
+        const val SPOTIFY_CLIENT_ID = "e28855579e6b4e499adf252d742d7df3"
     }
 }

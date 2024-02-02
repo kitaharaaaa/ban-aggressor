@@ -4,6 +4,9 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 val localProperties = Properties()
@@ -18,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kitahara.banaggressor"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -80,11 +83,15 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation ("com.google.code.gson:gson:2.6.1")
-    implementation(files("C:\\Users\\bvale\\AndroidStudioProjects\\banaggressor\\spotify-app-remote-release-0.8.0.aar"))
+    implementation(files("C:\\Users\\User Unknown\\AndroidStudioProjects\\ban-aggressor\\spotify-app-remote-release-0.8.0.aar"))
 
     implementation(project(":data"))
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
     implementation(project(":features:song-management"))
     implementation(project(":features:song-playback"))
+
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

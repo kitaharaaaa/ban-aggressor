@@ -1,11 +1,16 @@
 package com.hyperhoop.song_playback.presentation
 
-import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import com.hyperhoop.song_playback.domain.PlaybackInfo
 import com.kitahara.common.enums.ChannelsEnum
 import com.kitahara.common.enums.SongPlaybackActions
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /*
 * to call service you need create intent and pass action from SongPlaybackActions enum
@@ -16,17 +21,21 @@ import com.kitahara.common.enums.SongPlaybackActions
             startService(this)
         }
 * */
-class SongPlaybackService : Service() {
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+class SongPlaybackService@Inject constructor() : LifecycleService() {
+
+   /* @Inject todo uncomment
+    lateinit var playbackInfo: PlaybackInfo*/
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+       /* lifecycleScope.launch {
+            playbackInfo.artistFlow.collect {
+                Log.e(TAG, "data = $it")
+                pushSongStatusNotification(it)
+            }
+        }*/
 
         when (intent?.action) {
-            SongPlaybackActions.Start.toString() -> startSongPlayback()
-
-            SongPlaybackActions.Update.toString() -> updateNotification()
+            SongPlaybackActions.Start.toString() -> pushSongStatusNotification("Start play songs")
 
             SongPlaybackActions.Stop.toString() -> stopSelf()
         }
@@ -34,15 +43,12 @@ class SongPlaybackService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun updateNotification() {
-        TODO("Not yet implemented")
-    }
+    private fun pushSongStatusNotification(s: String?) {
 
-    private fun startSongPlayback() {
         startForeground(
             1,
             baseNotification
-                .setContentText("Bring Me The Horizone") //todo make dynamic name + customize notification
+                .setContentText(s) //todo make dynamic name + customize notification
                 .setContentInfo("якийсь вестерн чи шо")
                 .build()
         )
@@ -54,6 +60,10 @@ class SongPlaybackService : Service() {
     ).apply {
         setSmallIcon(com.kitahara.theme.R.drawable.baseline_music_indicator)
         setContentTitle(ChannelsEnum.SongPlayback.notificationName)
+    }
+
+    companion object {
+        const val TAG = "SongPlaybackService"
     }
 }
 

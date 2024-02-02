@@ -4,6 +4,7 @@ import com.kitahara.data.general_data.PlayerGeneral.isSpotifyPlaying
 import com.kitahara.data.general_data.PlayerGeneral.playerApi
 import javax.inject.Inject
 
+//todo move into implementations
 class SongPlayback@Inject constructor() {
 
     fun next() = playerApi?.skipNext()

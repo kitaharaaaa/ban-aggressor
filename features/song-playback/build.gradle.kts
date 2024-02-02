@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -40,7 +43,11 @@ dependencies {
     implementation(libs.material)
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
+    implementation(libs.androidx.lifecycle.service)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }
