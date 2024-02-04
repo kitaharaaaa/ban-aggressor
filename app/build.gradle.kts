@@ -80,7 +80,13 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation ("com.google.code.gson:gson:2.6.1")
-    implementation(files("C:\\Users\\bvale\\AndroidStudioProjects\\banaggressor\\spotify-app-remote-release-0.8.0.aar"))
+    implementation ("com.spotify.android:auth:1.2.5")
+
+    /*implementation(fileTree("libs") {
+        include("spotify-sdk.aar")
+    })*/
+
+    implementation(files("C:\\Users\\User Unknown\\AndroidStudioProjects\\ban-aggressor\\spotify-sdk.aar"))
 
 
     implementation(project(":data"))

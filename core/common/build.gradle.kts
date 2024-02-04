@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kitahara.common"
+    namespace = "com.kitahara.banaggressor"
     compileSdk = 34
 
     defaultConfig {

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kitahara.data"
+    namespace = "com.kitahara.banaggressor"
     compileSdk = 34
 
     defaultConfig {
@@ -56,7 +56,8 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation ("com.google.code.gson:gson:2.6.1")
+    implementation ("com.spotify.android:auth:1.2.5")
 
-    implementation(files("C:\\Users\\bvale\\AndroidStudioProjects\\banaggressor\\spotify-app-remote-release-0.8.0.aar"))
+    implementation(files("C:\\Users\\User Unknown\\AndroidStudioProjects\\ban-aggressor\\spotify-sdk.aar"))
     implementation(project(":core:common"))
 }

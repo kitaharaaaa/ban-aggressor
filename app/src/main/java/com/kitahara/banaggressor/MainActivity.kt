@@ -1,5 +1,6 @@
 package com.kitahara.banaggressor
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -18,8 +19,12 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp
 import com.spotify.android.appremote.api.error.NotLoggedInException
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException
+import com.spotify.sdk.android.auth.AuthorizationClient
+import com.spotify.sdk.android.auth.AuthorizationRequest
+import com.spotify.sdk.android.auth.AuthorizationResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+
 
 class MainActivity : ComponentActivity() {
     private var connectionParams: ConnectionParams? = null
@@ -62,6 +67,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val builder: AuthorizationRequest.Builder = AuthorizationRequest.Builder(
+            "e28855579e6b4e499adf252d742d7df3",
+            AuthorizationResponse.Type.TOKEN,
+            "yourcustomprotocol://callback"
+
+        )
+            .setScopes(arrayOf("streaming"))
+            .setShowDialog(true)
+
+        AuthorizationClient.openLoginInBrowser(this, builder.build())
+
 
         setContent {
             BanAggressorTheme {
@@ -84,21 +100,66 @@ class MainActivity : ComponentActivity() {
     }
 
     //make service from it to avoid start/stop lifecycle
+
+    /* if (isSpotifyInstalled()) {
+         customToast("Spotify detected")
+         connectionParams = ConnectionParams.Builder("e28855579e6b4e499adf252d742d7df3")
+             .setRedirectUri("https://example.com/callback")
+             .showAuthView(true)
+             .build()
+
+         SpotifyAppRemote.disconnect(mSpotifyAppRemote)
+         SpotifyAppRemote.connect(this.applicationContext, connectionParams, spotifyConnectionListener)
+
+     } else {
+         customToast("Spotify not installed")
+     }*/
+
+
     override fun onStart() {
         super.onStart()
 
-        if (isSpotifyInstalled()) {
-            customToast("Spotify detected")
-            connectionParams = ConnectionParams.Builder("e28855579e6b4e499adf252d742d7df3")
-                .setRedirectUri("https://example.com/callback")
-                .showAuthView(true)
-                .build()
-        } else {
-            customToast("Spotify Installed")
-        }
+        Log.e("onStart", "triggered")
 
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote)
-        SpotifyAppRemote.connect(this, connectionParams, spotifyConnectionListener)
+
+        val uri = intent?.data
+        if (uri != null) {
+            val response: AuthorizationResponse = AuthorizationResponse.fromUri(uri)
+
+            when (response.type) {
+                AuthorizationResponse.Type.TOKEN -> {
+                    Log.e("AuthResult", "token = " + response.accessToken)
+                }
+
+                else -> {
+                    Log.e("AuthResult", "else ")
+                }
+
+            }
+        }
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.e("onNewIntent", "triggered")
+        val uri = intent?.data
+
+        Log.e("Uri", uri.toString())
+        if (uri != null) {
+            val response: AuthorizationResponse = AuthorizationResponse.fromUri(uri)
+
+            when (response.type) {
+                AuthorizationResponse.Type.TOKEN -> {
+                    Log.e("AuthResult", "token = " + response.accessToken)
+                }
+
+                else -> {
+                    Log.e("AuthResult", "else ")
+                }
+
+            }
+        }
     }
 
     override fun onStop() {
