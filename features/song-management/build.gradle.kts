@@ -2,9 +2,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
 
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -35,7 +35,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     kotlinOptions {
         jvmTarget = "1.8"

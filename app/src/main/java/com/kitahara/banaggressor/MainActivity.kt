@@ -2,16 +2,16 @@ package com.kitahara.banaggressor
 
 import android.Manifest
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.hyperhoop.song_playback.presentation.ServiceManagement
 import com.kitahara.data.auth.SpotifyAuthImpl
-import com.kitahara.data.connection.source.SpotifyConnectionHandler
+import com.kitahara.song_management.presentation.playback_state.PlaybackStateBroadcastReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,8 +20,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var serviceManager: ServiceManagement
 
-    @Inject
-    lateinit var connectionHandler: SpotifyConnectionHandler
 
     @Inject
     lateinit var auth: SpotifyAuthImpl
@@ -29,30 +27,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        connectionHandler.buildConnection {
-            customToast(it)
+        val intentFilter = IntentFilter().apply {
+            addAction("com.spotify.music.playbackstatechanged")
+            addAction("com.spotify.music.metadatachanged")
+            addAction("com.spotify.music.queuechanged")
         }
-        setContent {
-//todo set stop service button
-        }
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        connectionHandler.startSpotifyConnection {
-            customToast(it)
-        }
-      /*  auth()*/
-    }
-
-    private fun customToast(text: String) {
-        Toast.makeText(
+        ContextCompat.registerReceiver(
             this,
-            text,
-            Toast.LENGTH_SHORT
-        ).show()
+            PlaybackStateBroadcastReceiver(),
+            intentFilter,
+            ContextCompat.RECEIVER_EXPORTED,
+        )
+
+        auth()
+
+        setContent {
+
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        //todo save token
+        val token = auth.getTokenFromIntent(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,6 +69,12 @@ class MainActivity : ComponentActivity() {
                 )
             } else serviceManager.launchService()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        serviceManager.stopService()
     }
 }
 

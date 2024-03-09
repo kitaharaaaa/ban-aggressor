@@ -2,13 +2,13 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
 
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.kitahara.data"
+    namespace = "com.kitahara.banaggressor"
     compileSdk = 34
 
     defaultConfig {
@@ -55,9 +55,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation ("com.google.code.gson:gson:2.6.1")
-    implementation ("com.spotify.android:auth:1.2.5")
+    implementation(libs.gson)
+    implementation(libs.auth)
 
-    implementation(files("C:\\Users\\User Unknown\\AndroidStudioProjects\\ban-aggressor\\spotify-app-remote-release-0.8.0.aar"))
     implementation(project(":core:common"))
 }

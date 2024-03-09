@@ -4,9 +4,9 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
 
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 val localProperties = Properties()
@@ -55,7 +55,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     packaging {
         resources {
@@ -81,9 +81,6 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-
-    implementation ("com.google.code.gson:gson:2.6.1")
-    implementation(files("C:\\Users\\User Unknown\\AndroidStudioProjects\\ban-aggressor\\spotify-app-remote-release-0.8.0.aar"))
 
     implementation(project(":data"))
     implementation(project(":core:common"))
