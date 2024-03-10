@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
@@ -8,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kitahara.song_management"
+    namespace = "com.kitahara.log_in"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -57,6 +56,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.material3)
     implementation(libs.ui)
+    /*implementation(libs.androidx.navigation.compose)*/
 
     debugImplementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)
@@ -64,4 +64,8 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation (libs.hilt.android.navigation)
+
+    implementation(project(":core:common"))
+    implementation(project(":core:theme"))
 }

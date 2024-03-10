@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/core/theme" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/log-in" />
             <option value="$PROJECT_DIR$/features/song-management" />
             <option value="$PROJECT_DIR$/features/song-playback" />
           </set>

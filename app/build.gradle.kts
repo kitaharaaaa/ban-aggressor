@@ -55,7 +55,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.material3)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -85,6 +86,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
+    implementation(project(":features:log-in"))
     implementation(project(":features:song-management"))
     implementation(project(":features:song-playback"))
 

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 
     kotlin("kapt")
 }
@@ -46,6 +47,11 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //room
+    implementation(libs.androidx.room.ktx)
+    // To use Kotlin Symbol Processing (KSP)
+    ksp(libs.androidx.room.compiler)
 
     //ktor
     implementation( libs.ktor.client.android)

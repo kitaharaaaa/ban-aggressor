@@ -1,9 +1,13 @@
 package com.kitahara.data.di
 
+import android.content.Context
 import android.util.Log
+import androidx.room.Room
+import com.kitahara.data.local.SpotifyDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -33,7 +37,8 @@ object SingletonModule {
         }
 
         install(ContentNegotiation) {
-            json(Json {
+            json(
+                Json {
                 ignoreUnknownKeys = true
                 isLenient = true
             })
@@ -44,4 +49,16 @@ object SingletonModule {
             accept(ContentType.Application.Json)
         }
     }
+
+    @Provides
+    fun provideSpotifyDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(
+            context,
+            SpotifyDatabase::class.java,
+            "BanAggressor"
+        ).build()
+
+    @Provides
+    fun provideTokenDao(spotifyDatabase: SpotifyDatabase) =
+        spotifyDatabase.tokenDao()
 }
