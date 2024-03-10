@@ -87,7 +87,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
     implementation(project(":features:log-in"))
-    implementation(project(":features:song-management"))
+    implementation(project(":features:home"))
     implementation(project(":features:song-playback"))
 
     //hilt

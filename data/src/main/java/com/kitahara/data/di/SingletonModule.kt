@@ -61,4 +61,8 @@ object SingletonModule {
     @Provides
     fun provideTokenDao(spotifyDatabase: SpotifyDatabase) =
         spotifyDatabase.tokenDao()
+
+    @Provides
+    fun provideSpotifyStateDao(spotifyDatabase: SpotifyDatabase) =
+        spotifyDatabase.spotifyStateDao()
 }

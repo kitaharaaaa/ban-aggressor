@@ -2,6 +2,7 @@ package com.kitahara.banaggressor.glue.log_in.repos
 
 import android.content.Intent
 import android.util.Log
+import com.kitahara.common.exceptions.ExpiredToken
 import com.kitahara.data.local.dao.TokenDao
 import com.kitahara.data.local.entity.TokenEntity
 import com.kitahara.data.remote.token.TokenExtraction
@@ -25,6 +26,7 @@ class TokenHandlingImpl @Inject constructor(
         return System.currentTimeMillis() >= expireTime.time
     }
 
+    @Throws(ExpiredToken::class)
     override suspend fun saveNewToken(intent: Intent?) {
         val tokenData = tokenExtraction.getTokenData(intent)
 
@@ -35,8 +37,6 @@ class TokenHandlingImpl @Inject constructor(
             val updatedDate: Date? = calendar.time
             Log.e(tag, "token = ${tokenData.token}\n expiresIn = ${tokenData.expiresIn}")
             tokenDao.upsert(TokenEntity(token = tokenData.token, expireTime = updatedDate))
-        } else {
-            Log.e(tag, "Token is null")
-        }
+        } else throw ExpiredToken()
     }
 }

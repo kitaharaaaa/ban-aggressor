@@ -1,15 +1,11 @@
 package com.hyperhoop.song_playback.presentation
 
 import android.content.Intent
-import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.lifecycleScope
-import com.hyperhoop.song_playback.domain.PlaybackInfo
 import com.kitahara.common.enums.ChannelsEnum
 import com.kitahara.common.enums.SongPlaybackActions
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /*
@@ -21,6 +17,8 @@ import javax.inject.Inject
             startService(this)
         }
 * */
+
+@AndroidEntryPoint
 class SongPlaybackService@Inject constructor() : LifecycleService() {
 
    /* @Inject todo uncomment
@@ -60,10 +58,6 @@ class SongPlaybackService@Inject constructor() : LifecycleService() {
     ).apply {
         setSmallIcon(com.kitahara.theme.R.drawable.baseline_music_indicator)
         setContentTitle(ChannelsEnum.SongPlayback.notificationName)
-    }
-
-    companion object {
-        const val TAG = "SongPlaybackService"
     }
 }
 

@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kitahara.log_in"
+    namespace = "com.kitahara.home"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -57,7 +57,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.material3)
     implementation(libs.ui)
-    /*implementation(libs.androidx.navigation.compose)*/
 
     debugImplementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)
@@ -65,8 +64,4 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    implementation (libs.hilt.android.navigation)
-
-    implementation(project(":core:common"))
-    implementation(project(":core:theme"))
 }

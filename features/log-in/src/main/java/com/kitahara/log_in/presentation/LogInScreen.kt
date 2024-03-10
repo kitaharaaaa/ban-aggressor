@@ -23,11 +23,13 @@ import androidx.core.util.Consumer
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.kitahara.common.exceptions.ExpiredToken
 import com.kitahara.log_in.domain.LogInLauncher
 
 @Composable
 fun LogInScreen(
-    logInLauncher: LogInLauncher
+    logInLauncher: LogInLauncher,
+    navigateHomeScreen: () -> Unit
 ) {
     val lifecycleOwner by rememberUpdatedState(LocalLifecycleOwner.current)
     val activity = (LocalContext.current as ComponentActivity)
@@ -58,12 +60,18 @@ fun LogInScreen(
             listener = Consumer<Intent> {
                 Log.e("Consumer", it.data.toString())
 
-                viewModel.saveNewToken(it)
+                try {
+                    viewModel.saveNewToken(it)
+                } catch (e: ExpiredToken) {
+                    logInLauncher.openLogInWindow()
+                }
             }
 
             if (event == Lifecycle.Event.ON_RESUME) {
                 listener?.let {
                     activity.addOnNewIntentListener(it)
+
+                    navigateHomeScreen()
                 }
             }
         }
@@ -88,6 +96,6 @@ fun LogInScreenPreview() {
             override fun openLogInWindow() {
 
             }
-        },
+        }, {}
     )
 }

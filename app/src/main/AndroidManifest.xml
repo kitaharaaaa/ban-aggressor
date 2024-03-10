@@ -39,7 +39,7 @@
         </activity>
 
         <receiver
-            android:name="com.kitahara.song_management.presentation.playback_state.PlaybackStateBroadcastReceiver"
+            android:name="com.kitahara.home.presentation.receiver.PlaybackStateBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             />
