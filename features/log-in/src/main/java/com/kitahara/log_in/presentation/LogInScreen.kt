@@ -1,12 +1,18 @@
 package com.kitahara.log_in.presentation
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -16,14 +22,15 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.util.Consumer
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.kitahara.common.exceptions.ExpiredToken
 import com.kitahara.log_in.domain.LogInLauncher
 
 @Composable
@@ -32,13 +39,12 @@ fun LogInScreen(
     navigateHomeScreen: () -> Unit
 ) {
     val lifecycleOwner by rememberUpdatedState(LocalLifecycleOwner.current)
-    val activity = (LocalContext.current as ComponentActivity)
+    val activity = LocalContext.current
 
     val viewModel = hiltViewModel<LogInViewModel>()
 
     LaunchedEffect(key1 = Unit) {
-        if (viewModel.isTokenExpired())
-            logInLauncher.openLogInWindow()
+        if (viewModel.isTokenExpired().not()) navigateHomeScreen()
     }
 
     Column(
@@ -48,9 +54,27 @@ fun LogInScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        CircularProgressIndicator(
+            modifier = Modifier.size(50.dp),
+            strokeWidth = 4.dp,
+            trackColor = Color.Black,
+            color = Transparent
+        )
+
+        Spacer(Modifier.height(10.dp))
+
         Text(
             text = "Logging in screen"
         )
+
+        Spacer(Modifier.height(40.dp))
+
+        FilledTonalButton(onClick = logInLauncher::openLogInWindow) {
+            Text(
+                text = "Request valid token"
+            )
+        }
     }
 
     DisposableEffect(key1 = lifecycleOwner) {
@@ -60,18 +84,16 @@ fun LogInScreen(
             listener = Consumer<Intent> {
                 Log.e("Consumer", it.data.toString())
 
-                try {
-                    viewModel.saveNewToken(it)
-                } catch (e: ExpiredToken) {
-                    logInLauncher.openLogInWindow()
-                }
+                viewModel.saveNewToken(
+                    intent = it,
+                    onComplete = navigateHomeScreen,
+                    onFailure = logInLauncher::openLogInWindow
+                )
             }
 
             if (event == Lifecycle.Event.ON_RESUME) {
                 listener?.let {
-                    activity.addOnNewIntentListener(it)
-
-                    navigateHomeScreen()
+                    activity.toInstance().addOnNewIntentListener(it)
                 }
             }
         }
@@ -80,13 +102,15 @@ fun LogInScreen(
 
         onDispose {
             listener?.let {
-                activity.removeOnNewIntentListener(it)
+                activity.toInstance().removeOnNewIntentListener(it)
             }
 
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 }
+
+fun Context.toInstance(): ComponentActivity = this as ComponentActivity
 
 @Composable
 @Preview
@@ -96,6 +120,6 @@ fun LogInScreenPreview() {
             override fun openLogInWindow() {
 
             }
-        }, {}
-    )
+        }
+    ) {}
 }

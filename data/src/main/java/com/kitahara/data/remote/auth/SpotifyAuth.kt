@@ -26,7 +26,7 @@ class SpotifyAuth @Inject constructor(
     }
 
     companion object {
-        val REDIRECT_URI = "yourcustomprotocol://callback"
+        const val REDIRECT_URI = "yourcustomprotocol://callback"
 
         const val SPOTIFY_CLIENT_ID = "e28855579e6b4e499adf252d742d7df3"
     }

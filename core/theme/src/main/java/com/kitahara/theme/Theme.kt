@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -19,7 +20,16 @@ private val DarkColorScheme = darkColorScheme(
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
-
+private val DarkColorPalette = darkColorScheme(
+    primary = Color(30, 215, 96),
+    primaryContainer = Color(25, 185, 84),
+    secondary = Color(18, 134, 61),
+    secondaryContainer = Color(10, 74, 34),
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    surface = Color.Black,
+    onSurface = Color.White
+)
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
@@ -62,7 +72,7 @@ fun BanAggressorTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = DarkColorPalette,
         typography = Typography,
         content = content
     )
