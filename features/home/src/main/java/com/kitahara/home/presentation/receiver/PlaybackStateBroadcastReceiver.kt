@@ -6,11 +6,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.kitahara.home.domain.repository.CurrentSongStatusUpdateRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlaybackStateBroadcastReceiver @Inject constructor() : BroadcastReceiver() {
+    @Inject
+    lateinit var currentSongStatusRepository: CurrentSongStatusUpdateRepository
+
     override fun onReceive(context: Context?, intent: Intent?) {
         when (intent?.action) {
             "com.spotify.music.playbackstatechanged" -> {
@@ -24,18 +28,23 @@ class PlaybackStateBroadcastReceiver @Inject constructor() : BroadcastReceiver()
                     TAG,
                     "isPlaying = $isPlaying \n playingSecond = $playbackPosition\n sendDelay = ${System.currentTimeMillis() - sendTime}\n"
                 )
+
+                currentSongStatusRepository.updatePlayingParameter(isPlaying)
             }
 
             "com.spotify.music.metadatachanged" -> {
                 val trackId = intent.getStringExtra("id")
                 val artistName = intent.getStringExtra("artist")
-                val albumName = intent.getStringExtra("album")
                 val trackName = intent.getStringExtra("track")
-                val trackLengthInSec = intent.getIntExtra("length", 0)
 
                 Log.e(
                     TAG,
-                    "length = $trackLengthInSec \n artist = $artistName\n track = $trackName\n"
+                    "trackId = $trackId \n artist = $artistName\n track = $trackName\n"
+                )
+
+                currentSongStatusRepository.updateCurrentState(
+                    trackId,
+                    artistName, trackName
                 )
             }
 

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import com.kitahara.data.local.entity.SpotifyStateEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SpotifyStateDao {
@@ -14,9 +13,9 @@ interface SpotifyStateDao {
     @Query("SELECT * FROM spotify_state_table WHERE id = 0")
     fun getSpotifyFullState(): SpotifyStateEntity
 
-    @Query("SELECT s.currently_playing FROM spotify_state_table s WHERE id = 0")
-    fun isPlaying(): Flow<Boolean>
+    @Query("UPDATE spotify_state_table SET cover_uri = :uri WHERE id = 0")
+    fun updateCoverUri(uri: String)
 
-    @Query("SELECT s.author FROM spotify_state_table s WHERE id = 0")
-    fun getAuthor(): Flow<String>
+    @Query("UPDATE spotify_state_table SET currently_playing = :isPlaying WHERE id = 0")
+    fun updateIsPlaying(isPlaying: Boolean)
 }

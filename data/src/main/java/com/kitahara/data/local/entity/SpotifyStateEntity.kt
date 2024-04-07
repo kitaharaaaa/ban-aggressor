@@ -8,8 +8,11 @@ import androidx.room.PrimaryKey
 data class SpotifyStateEntity(
     @PrimaryKey(false)
     val id: Int = 0,
-    val author: String,
-    val track: String,
+    @ColumnInfo("author_name")
+    val authorName: String?,
+    val track: String?,
+    @ColumnInfo("cover_uri")
+    val coverUri: String?,
     @ColumnInfo("currently_playing")
     val currentlyPlaying: Boolean,
 )
