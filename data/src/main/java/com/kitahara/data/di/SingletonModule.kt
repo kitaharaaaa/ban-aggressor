@@ -20,10 +20,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object SingletonModule {
+    @Singleton
     @Provides
     fun provideKtorClient() = HttpClient(Android) {
         install(Logging) {
@@ -50,6 +52,7 @@ object SingletonModule {
         }
     }
 
+    @Singleton
     @Provides
     fun provideSpotifyDatabase(@ApplicationContext context: Context) =
         Room.databaseBuilder(
@@ -58,10 +61,12 @@ object SingletonModule {
             "BanAggressor"
         ).build()
 
+    @Singleton
     @Provides
     fun provideTokenDao(spotifyDatabase: SpotifyDatabase) =
         spotifyDatabase.tokenDao()
 
+    @Singleton
     @Provides
     fun provideSpotifyStateDao(spotifyDatabase: SpotifyDatabase) =
         spotifyDatabase.spotifyStateDao()

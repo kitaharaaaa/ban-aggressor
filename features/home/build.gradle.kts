@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(project(":core:common"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -61,7 +63,11 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)
 
+    //async image loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     //hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.android.navigation)
     kapt(libs.hilt.android.compiler)
 }

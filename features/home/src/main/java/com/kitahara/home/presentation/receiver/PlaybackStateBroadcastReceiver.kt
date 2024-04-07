@@ -8,6 +8,9 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.kitahara.home.domain.repository.CurrentSongStatusUpdateRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,8 +31,9 @@ class PlaybackStateBroadcastReceiver @Inject constructor() : BroadcastReceiver()
                     TAG,
                     "isPlaying = $isPlaying \n playingSecond = $playbackPosition\n sendDelay = ${System.currentTimeMillis() - sendTime}\n"
                 )
-
-                currentSongStatusRepository.updatePlayingParameter(isPlaying)
+                CoroutineScope(Main).launch {
+                    currentSongStatusRepository.updatePlayingParameter(isPlaying)
+                }
             }
 
             "com.spotify.music.metadatachanged" -> {
@@ -42,10 +46,12 @@ class PlaybackStateBroadcastReceiver @Inject constructor() : BroadcastReceiver()
                     "trackId = $trackId \n artist = $artistName\n track = $trackName\n"
                 )
 
-                currentSongStatusRepository.updateCurrentState(
-                    trackId,
-                    artistName, trackName
-                )
+                CoroutineScope(Main).launch{
+                    currentSongStatusRepository.updateCurrentState(
+                        trackId,
+                        artistName, trackName
+                    )
+                }
             }
 
             else -> {
